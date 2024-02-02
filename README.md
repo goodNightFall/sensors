@@ -1,19 +1,31 @@
 # Sensors
+Приложение для мониторинга датчиков, которое предоставляет пользователю удобный способ отслеживать и анализировать данные, получаемые от различных датчиков.
 
-## Project setup
-```
+## Содержание
+- [Технологии](#технологии)
+- [Разработка](#разработка)
+
+## Технологии
+- [Vue 3](https://v3.ru.vuejs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+
+## Разработка
+
+### Установка зависимостей
+Для установки зависимостей, выполните команду:
+```sh
 npm install
 ```
 
-### Compiles and hot-reloads for development
-```
+### Запуск Development сервера
+Чтобы запустить сервер для разработки, выполните команду:
+```sh
 npm run serve
 ```
 
-### Compiles and minifies for production
-```
+### Создание билда
+Чтобы выполнить production сборку, выполните команду: 
+```sh
 npm run build
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
