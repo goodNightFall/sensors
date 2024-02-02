@@ -1,4 +1,4 @@
-# sensors
+# Sensors
 
 ## Project setup
 ```
