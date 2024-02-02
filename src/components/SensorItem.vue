@@ -19,11 +19,12 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue"
-import MyButton from "./UI/MyButton.vue"
+import { MyButton } from "./UI"
 import Sensor from "@/types/Sensor"
 
 interface State {
   interval: number
+  isVisible: boolean
 }
 
 export default defineComponent({
@@ -32,6 +33,7 @@ export default defineComponent({
   data(): State {
     return {
       interval: 0,
+      isVisible: false,
     }
   },
 
@@ -52,6 +54,7 @@ export default defineComponent({
       this.sensor.temperature
         ? (this.sensor.temperature += this.getRandomInt(3) - 1)
         : null
+
       this.sensor.humidity
         ? this.sensor.humidity > 1
           ? (this.sensor.humidity += this.getRandomInt(3) - 1)

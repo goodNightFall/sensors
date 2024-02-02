@@ -16,8 +16,8 @@
 
 <script lang="ts">
 import { defineComponent } from "vue"
-import MyCheckbox from "./UI/MyCheckbox.vue"
-import MyButton from "./UI/MyButton.vue"
+import { MyButton, MyCheckbox } from "./UI"
+
 import Sensor from "../types/Sensor"
 
 interface State {

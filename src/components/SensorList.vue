@@ -8,6 +8,9 @@
       @deleteSensor="deleteSensor"
     />
   </div>
+  <div v-if="sensors.length === 0">
+    <h3 class="title">Список датчиков пуст</h3>
+  </div>
 </template>
 
 <script lang="ts">
