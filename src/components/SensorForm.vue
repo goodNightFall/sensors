@@ -3,15 +3,18 @@
     <h4 class="title">Добавление датчика</h4>
     <input v-model="name" class="input" type="text" placeholder="Название" />
 
-    <MyCheckbox title="Датчик измеряет температуру?" v-model="hasTemperature" />
-    <MyCheckbox title="Датчик измеряет влажность?" v-model="hasHumidity" />
-    <MyButton class="addBtn" @click="createSensor">Добавить</MyButton>
+    <BaseCheckbox
+      title="Датчик измеряет температуру?"
+      v-model="hasTemperature"
+    />
+    <BaseCheckbox title="Датчик измеряет влажность?" v-model="hasHumidity" />
+    <BaseButton class="addBtn" @click="createSensor">Добавить</BaseButton>
   </form>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue"
-import { MyButton, MyCheckbox } from "./UI"
+import { BaseButton, BaseCheckbox } from "./UI"
 import Sensor from "../types/Sensor"
 
 const name = ref("")

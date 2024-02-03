@@ -13,13 +13,13 @@
         >{{ sensor.hasOwnProperty("humidity") ? sensor.humidity : "None" }}
       </div>
     </div>
-    <MyButton class="deleteBtn" @click="deleteSensor">Удалить</MyButton>
+    <BaseButton class="deleteBtn" @click="deleteSensor">Удалить</BaseButton>
   </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, onUnmounted } from "vue"
-import { MyButton } from "./UI"
+import { BaseButton } from "./UI"
 import Sensor from "@/types/Sensor"
 
 interface Props {
