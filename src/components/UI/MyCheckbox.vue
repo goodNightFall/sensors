@@ -5,26 +5,19 @@
   </label>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue"
+<script setup lang="ts">
+interface Props {
+  title: string
+  modelValue: boolean
+}
 
-export default defineComponent({
-  name: "MyCheckbox",
+const props = defineProps<Props>()
 
-  props: {
-    title: String,
-    modelValue: Boolean,
-  },
+const emit = defineEmits(["update:modelValue"])
 
-  methods: {
-    updateInput(event: Event) {
-      this.$emit(
-        "update:modelValue",
-        (event.target as HTMLInputElement).checked
-      )
-    },
-  },
-})
+function updateInput(event: Event) {
+  emit("update:modelValue", (event.target as HTMLInputElement).checked)
+}
 </script>
 
 <style scoped>

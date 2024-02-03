@@ -17,71 +17,49 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from "vue"
+<script setup lang="ts">
+import { onMounted, onUnmounted } from "vue"
 import { MyButton } from "./UI"
 import Sensor from "@/types/Sensor"
 
-interface State {
-  interval: number
-  isVisible: boolean
+interface Props {
+  sensor: Sensor
 }
 
-export default defineComponent({
-  name: "SensorItem",
+let interval: number
 
-  data(): State {
-    return {
-      interval: 0,
-      isVisible: false,
-    }
-  },
+const props = defineProps<Props>()
 
-  components: {
-    MyButton,
-  },
-
-  props: {
-    sensor: {
-      type: Object as PropType<Sensor>,
-      required: true,
-    },
-  },
-
-  mounted() {
-    // Запускается setInterval, который меняет значения температуры и влажности датчиков
-    this.interval = setInterval(() => {
-      this.sensor.temperature
-        ? (this.sensor.temperature += this.getRandomInt(3) - 1)
-        : null
-
-      this.sensor.humidity
-        ? this.sensor.humidity > 1
-          ? (this.sensor.humidity += this.getRandomInt(3) - 1)
-          : (this.sensor.humidity += this.getRandomInt(3))
-        : null
-    }, Math.random() * 30000)
-  },
-
-  unmounted() {
-    clearInterval(this.interval)
-  },
-
-  methods: {
-    deleteSensor() {
-      this.$emit("deleteSensor", this.sensor.sensor_id)
-    },
-
-    getRandomInt(max: number): number {
-      const randomInt = Math.floor(Math.random() * max)
-      return randomInt
-    },
-  },
-
-  emits: {
-    deleteSensor: (id: number) => true,
+const emit = defineEmits({
+  remove: (id: number) => {
+    return true
   },
 })
+
+onMounted(() => {
+  interval = setInterval(() => {
+    props.sensor.temperature
+      ? (props.sensor.temperature += getRandomInt(3) - 1)
+      : null
+
+    props.sensor.humidity
+      ? props.sensor.humidity > 1
+        ? (props.sensor.humidity += getRandomInt(3) - 1)
+        : (props.sensor.humidity += getRandomInt(3))
+      : null
+  }, Math.random() * 30000)
+})
+
+onUnmounted(() => clearInterval(interval))
+
+function getRandomInt(max: number): number {
+  const randomInt = Math.floor(Math.random() * max)
+  return randomInt
+}
+
+function deleteSensor() {
+  emit("remove", props.sensor.sensor_id)
+}
 </script>
 
 <style scoped>

@@ -5,40 +5,35 @@
       v-for="sensor in sensors"
       :sensor="sensor"
       :key="sensor.sensor_id"
-      @deleteSensor="deleteSensor"
+      @remove="deleteSensor"
     />
   </div>
+
   <div v-if="sensors.length === 0">
     <h3 class="title">Список датчиков пуст</h3>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from "vue"
+<script setup lang="ts">
+import {} from "vue"
 import SensorItem from "./SensorItem.vue"
 import Sensor from "@/types/Sensor"
 
-export default defineComponent({
-  name: "SensorList",
-  components: { SensorItem },
+interface Props {
+  sensors: Sensor[]
+}
 
-  props: {
-    sensors: {
-      type: Array as PropType<Sensor[]>,
-      required: true,
-    },
-  },
+const props = defineProps<Props>()
 
-  methods: {
-    deleteSensor(id: number) {
-      this.$emit("deleteSensor", id)
-    },
-  },
-
-  emits: {
-    deleteSensor: (id: number) => true,
+const emit = defineEmits({
+  remove: (id: number) => {
+    return true
   },
 })
+
+function deleteSensor(id: number) {
+  emit("remove", id)
+}
 </script>
 
 <style scoped>
