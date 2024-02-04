@@ -1,7 +1,12 @@
 <template>
   <label class="checkbox">
     {{ title }}
-    <input :checked="modelValue" @change="updateInput" type="checkbox" />
+    <input
+      :checked="modelValue"
+      @change="updateInput"
+      type="checkbox"
+      :name="name"
+    />
   </label>
 </template>
 
@@ -9,11 +14,14 @@
 interface Props {
   title: string
   modelValue: boolean
+  name: string
 }
 
 const props = defineProps<Props>()
 
-const emit = defineEmits(["update:modelValue"])
+const emit = defineEmits<{
+  (e: "update:modelValue", event: boolean): void
+}>()
 
 function updateInput(event: Event) {
   emit("update:modelValue", (event.target as HTMLInputElement).checked)

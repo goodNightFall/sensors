@@ -26,13 +26,13 @@ interface Props {
 const props = defineProps<Props>()
 
 const emit = defineEmits({
-  remove: (id: number) => {
+  remove: (sensor: Sensor, show: boolean) => {
     return true
   },
 })
 
-function deleteSensor(id: number) {
-  emit("remove", id)
+function deleteSensor(sensor: Sensor, show: boolean) {
+  emit("remove", sensor, show)
 }
 </script>
 

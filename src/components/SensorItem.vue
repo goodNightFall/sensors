@@ -31,7 +31,7 @@ let interval: number
 const props = defineProps<Props>()
 
 const emit = defineEmits({
-  remove: (id: number) => {
+  remove: (sensor: Sensor, show: boolean) => {
     return true
   },
 })
@@ -58,7 +58,7 @@ function getRandomInt(max: number): number {
 }
 
 function deleteSensor() {
-  emit("remove", props.sensor.sensor_id)
+  emit("remove", props.sensor, true)
 }
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <div class="container" v-if="show" @click="hideModal">
-    <div class="content"><slot></slot></div>
+    <div @click.stop class="content"><slot></slot></div>
   </div>
 </template>
 
@@ -9,14 +9,14 @@ interface Props {
   show: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  show: false,
-})
+const props = defineProps<Props>()
 
-const emit = defineEmits(["update:show"])
+const emit = defineEmits<{
+  (e: "hide", show: boolean): void
+}>()
 
 function hideModal() {
-  emit("update:show", false)
+  emit("hide", false)
 }
 </script>
 

@@ -2,7 +2,13 @@
   <div class="app">
     <header class="header"><h4 class="title">Датчики</h4></header>
     <SensorForm @create="createSensor" />
-    <SensorList @remove="deleteSensor" :sensors="sensors" />
+    <SensorList @remove="openDeleteModal" :sensors="sensors" />
+    <DeleteModal
+      @hide="openModal"
+      @remove="removeSensor"
+      :show="isVisible"
+      :sensor="removedSensor"
+    ></DeleteModal>
   </div>
 </template>
 
@@ -10,9 +16,16 @@
 import { ref, onMounted, onUnmounted } from "vue"
 import SensorList from "./components/SensorList.vue"
 import SensorForm from "./components/SensorForm.vue"
+import DeleteModal from "./components/DeleteModal.vue"
 import Sensor from "./types/Sensor"
 
-let sensors = ref<Sensor[]>([
+const isVisible = ref<boolean>(false)
+const removedSensor = ref<Sensor>({
+  sensor_id: 0,
+  name: "Default",
+})
+
+const sensors = ref<Sensor[]>([
   {
     sensor_id: 1,
     name: "N/A",
@@ -132,8 +145,21 @@ function createSensor(sensor: Sensor) {
   sensors.value.unshift(sensor)
 }
 
-function deleteSensor(id: number) {
-  sensors.value = sensors.value.filter((sensor) => id !== sensor.sensor_id)
+function openDeleteModal(sensor: Sensor, show: boolean) {
+  removedSensor.value = sensor
+  openModal(show)
+}
+
+function removeSensor() {
+  sensors.value = sensors.value.filter(
+    (sensor) => sensor.sensor_id !== removedSensor.value.sensor_id
+  )
+
+  openModal(false)
+}
+
+function openModal(show: boolean) {
+  isVisible.value = show
 }
 
 function saveSensors() {

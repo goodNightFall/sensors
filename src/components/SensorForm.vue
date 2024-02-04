@@ -1,13 +1,24 @@
 <template>
   <form class="container" @submit.prevent>
     <h4 class="title">Добавление датчика</h4>
-    <input v-model="name" class="input" type="text" placeholder="Название" />
+    <input
+      v-model="name"
+      class="input"
+      type="text"
+      placeholder="Название"
+      name="sensor-name"
+    />
 
     <BaseCheckbox
       title="Датчик измеряет температуру?"
       v-model="hasTemperature"
+      name="sensor-temperature"
     />
-    <BaseCheckbox title="Датчик измеряет влажность?" v-model="hasHumidity" />
+    <BaseCheckbox
+      title="Датчик измеряет влажность?"
+      v-model="hasHumidity"
+      name="sensor-humidity"
+    />
     <BaseButton class="addBtn" @click="createSensor">Добавить</BaseButton>
   </form>
 </template>
