@@ -1,19 +1,8 @@
 <template>
-  <BaseModal @hide="hideModal"
-    ><div class="container">
-      <div class="sensor">
-        <div class="value"><strong>Название: </strong>{{ sensor.name }}</div>
-        <div class="value">
-          <strong>Температура: </strong
-          >{{
-            sensor.hasOwnProperty("temperature") ? sensor.temperature : "None"
-          }}
-        </div>
-        <div class="value">
-          <strong>Влажность: </strong
-          >{{ sensor.hasOwnProperty("humidity") ? sensor.humidity : "None" }}
-        </div>
-      </div>
+  <BaseModal>
+    <div class="container">
+      <h3 class="title">Подтвердите удаление!</h3>
+      <div class="value"><strong>Название: </strong>{{ sensor.name }}</div>
       <BaseButton class="deleteBtn" @click="removeSensor">Удалить</BaseButton>
     </div>
   </BaseModal>
@@ -30,13 +19,8 @@ interface Props {
 const props = defineProps<Props>()
 
 const emit = defineEmits<{
-  (e: "hide", show: boolean): void
   (e: "remove"): void
 }>()
-
-function hideModal(show: boolean) {
-  emit("hide", show)
-}
 
 function removeSensor() {
   emit("remove")
@@ -46,17 +30,17 @@ function removeSensor() {
 <style scoped>
 .container {
   display: flex;
+  flex-direction: column;
   padding: 15px;
-  margin-top: 15px;
 }
 
-.sensor {
-  display: flex;
+.title {
+  font-size: 30px;
 }
 
 .value {
-  padding: 5px;
-  width: 300px;
+  font-size: 20px;
+  margin-block: 25px;
 }
 
 .deleteBtn {
@@ -66,25 +50,5 @@ function removeSensor() {
 
 .deleteBtn:hover {
   background-color: brown;
-}
-
-@media (max-width: 1120px) {
-  .value {
-    width: 200px;
-    font-size: 15px;
-  }
-}
-
-@media (max-width: 900px) {
-  .sensor {
-    flex-direction: column;
-  }
-}
-
-@media (max-width: 420px) {
-  .value {
-    width: 150px;
-    font-size: 12px;
-  }
 }
 </style>

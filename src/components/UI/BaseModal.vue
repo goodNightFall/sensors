@@ -12,7 +12,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const emit = defineEmits<{
-  (e: "hide", show: boolean): void
+  (e: "hide", show: false): void
 }>()
 
 function hideModal() {
