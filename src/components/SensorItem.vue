@@ -3,14 +3,10 @@
     <div class="sensor">
       <div class="value"><strong>Название: </strong>{{ sensor.name }}</div>
       <div class="value">
-        <strong>Температура: </strong
-        >{{
-          sensor.hasOwnProperty("temperature") ? sensor.temperature : "None"
-        }}
+        <strong>Температура: </strong>{{ showTemperatureValue }}
       </div>
       <div class="value">
-        <strong>Влажность: </strong
-        >{{ sensor.hasOwnProperty("humidity") ? sensor.humidity : "None" }}
+        <strong>Влажность: </strong>{{ showHumidityValue }}
       </div>
     </div>
     <BaseButton class="deleteBtn" @click="deleteSensor">Удалить</BaseButton>
@@ -18,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted } from "vue"
+import { computed, onMounted, onUnmounted } from "vue"
 import { BaseButton } from "./UI"
 import Sensor from "@/types/Sensor"
 
@@ -51,6 +47,14 @@ onMounted(() => {
 })
 
 onUnmounted(() => clearInterval(interval))
+
+const showTemperatureValue = computed(() =>
+  props.sensor.hasOwnProperty("temperature") ? props.sensor.temperature : "None"
+)
+
+const showHumidityValue = computed(() =>
+  props.sensor.hasOwnProperty("humidity") ? props.sensor.humidity : "None"
+)
 
 function getRandomInt(max: number): number {
   const randomInt = Math.floor(Math.random() * max)
