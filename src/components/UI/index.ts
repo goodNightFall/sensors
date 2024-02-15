@@ -1,4 +1,5 @@
-import MyButton from "./MyButton.vue"
-import MyCheckbox from "./MyCheckbox.vue"
+import BaseButton from "./BaseButton.vue"
+import BaseCheckbox from "./BaseCheckbox.vue"
+import BaseModal from "./BaseModal.vue"
 
-export { MyButton, MyCheckbox }
+export { BaseButton, BaseCheckbox, BaseModal }

@@ -3,85 +3,67 @@
     <div class="sensor">
       <div class="value"><strong>Название: </strong>{{ sensor.name }}</div>
       <div class="value">
-        <strong>Температура: </strong
-        >{{
-          sensor.hasOwnProperty("temperature") ? sensor.temperature : "None"
-        }}
+        <strong>Температура: </strong>{{ showTemperatureValue }}
       </div>
       <div class="value">
-        <strong>Влажность: </strong
-        >{{ sensor.hasOwnProperty("humidity") ? sensor.humidity : "None" }}
+        <strong>Влажность: </strong>{{ showHumidityValue }}
       </div>
     </div>
-    <MyButton class="deleteBtn" @click="deleteSensor">Удалить</MyButton>
+    <BaseButton class="deleteBtn" @click="deleteSensor">Удалить</BaseButton>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from "vue"
-import { MyButton } from "./UI"
+<script setup lang="ts">
+import { computed, onMounted, onUnmounted } from "vue"
+import { BaseButton } from "./UI"
 import Sensor from "@/types/Sensor"
 
-interface State {
-  interval: number
-  isVisible: boolean
+interface Props {
+  sensor: Sensor
 }
 
-export default defineComponent({
-  name: "SensorItem",
+let interval: number
 
-  data(): State {
-    return {
-      interval: 0,
-      isVisible: false,
-    }
-  },
+const props = defineProps<Props>()
 
-  components: {
-    MyButton,
-  },
-
-  props: {
-    sensor: {
-      type: Object as PropType<Sensor>,
-      required: true,
-    },
-  },
-
-  mounted() {
-    // Запускается setInterval, который меняет значения температуры и влажности датчиков
-    this.interval = setInterval(() => {
-      this.sensor.temperature
-        ? (this.sensor.temperature += this.getRandomInt(3) - 1)
-        : null
-
-      this.sensor.humidity
-        ? this.sensor.humidity > 1
-          ? (this.sensor.humidity += this.getRandomInt(3) - 1)
-          : (this.sensor.humidity += this.getRandomInt(3))
-        : null
-    }, Math.random() * 30000)
-  },
-
-  unmounted() {
-    clearInterval(this.interval)
-  },
-
-  methods: {
-    deleteSensor() {
-      this.$emit("deleteSensor", this.sensor.sensor_id)
-    },
-
-    getRandomInt(max: number): number {
-      const randomInt = Math.floor(Math.random() * max)
-      return randomInt
-    },
-  },
-
-  emits: {
-    deleteSensor: (id: number) => true,
+const emit = defineEmits({
+  remove: (sensor: Sensor, show: boolean) => {
+    return true
   },
 })
+
+onMounted(() => {
+  interval = setInterval(() => {
+    props.sensor.temperature
+      ? (props.sensor.temperature += getRandomInt(3) - 1)
+      : null
+
+    props.sensor.humidity
+      ? props.sensor.humidity > 1
+        ? (props.sensor.humidity += getRandomInt(3) - 1)
+        : (props.sensor.humidity += getRandomInt(3))
+      : null
+  }, Math.random() * 30000)
+})
+
+onUnmounted(() => clearInterval(interval))
+
+const showTemperatureValue = computed(() =>
+  props.sensor.hasOwnProperty("temperature") ? props.sensor.temperature : "None"
+)
+
+const showHumidityValue = computed(() =>
+  props.sensor.hasOwnProperty("humidity") ? props.sensor.humidity : "None"
+)
+
+function getRandomInt(max: number): number {
+  const randomInt = Math.floor(Math.random() * max)
+  return randomInt
+}
+
+function deleteSensor() {
+  emit("remove", props.sensor, true)
+}
 </script>
 
 <style scoped>

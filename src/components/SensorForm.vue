@@ -2,88 +2,70 @@
   <form class="container" @submit.prevent>
     <h4 class="title">Добавление датчика</h4>
     <input
-      v-model="sensor.name"
+      v-model="name"
       class="input"
       type="text"
       placeholder="Название"
+      name="sensor-name"
     />
 
-    <MyCheckbox title="Датчик измеряет температуру?" v-model="hasTemperature" />
-    <MyCheckbox title="Датчик измеряет влажность?" v-model="hasHumidity" />
-    <MyButton class="addBtn" @click="createSensor">Добавить</MyButton>
+    <BaseCheckbox
+      title="Датчик измеряет температуру?"
+      v-model="hasTemperature"
+      name="sensor-temperature"
+    />
+    <BaseCheckbox
+      title="Датчик измеряет влажность?"
+      v-model="hasHumidity"
+      name="sensor-humidity"
+    />
+    <BaseButton class="addBtn" @click="createSensor">Добавить</BaseButton>
   </form>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue"
-import { MyButton, MyCheckbox } from "./UI"
-
+<script setup lang="ts">
+import { ref } from "vue"
+import { BaseButton, BaseCheckbox } from "./UI"
 import Sensor from "../types/Sensor"
 
-interface State {
-  sensor: {
-    name: string
-  }
+const name = ref("")
+const hasTemperature = defineModel<boolean>("hasTemperature")
+const hasHumidity = defineModel<boolean>("hasHumidity")
 
-  hasTemperature: boolean
-  hasHumidity: boolean
-}
-
-export default defineComponent({
-  name: "SensorForm",
-  components: {
-    MyButton,
-    MyCheckbox,
-  },
-
-  data(): State {
-    return {
-      sensor: {
-        name: "",
-      },
-
-      hasTemperature: false,
-      hasHumidity: false,
-    }
-  },
-
-  methods: {
-    getRandomInt(max: number, negative: boolean): number {
-      const randomInt = Math.floor(Math.random() * max)
-      return negative ? randomInt - max / 2 : randomInt
-    },
-
-    // Функция, очищающая форму
-    clearForm() {
-      this.sensor.name = ""
-      this.hasTemperature = false
-      this.hasHumidity = false
-    },
-
-    createSensor() {
-      if (!this.sensor.name.length) {
-        alert("Введите название датчика!")
-        return
-      }
-
-      const newSensor: Sensor = {
-        sensor_id: Date.now(),
-        name: this.sensor.name,
-      }
-
-      this.hasTemperature &&
-        (newSensor.temperature = this.getRandomInt(50, true))
-      this.hasHumidity && (newSensor.humidity = this.getRandomInt(60, false))
-
-      this.$emit("createSensor", newSensor)
-      this.clearForm()
-    },
-  },
-
-  emits: {
-    createSensor: (sensor: Sensor) => true,
+const emit = defineEmits({
+  create: (sensor: Sensor) => {
+    return true
   },
 })
+
+function createSensor() {
+  if (!name.value.length) {
+    alert("Введите название датчика!")
+    return
+  }
+
+  const newSensor: Sensor = {
+    sensor_id: Date.now(),
+    name: name.value,
+  }
+
+  hasTemperature.value && (newSensor.temperature = getRandomInt(50, true))
+  hasHumidity.value && (newSensor.humidity = getRandomInt(60, false))
+
+  emit("create", newSensor)
+  clearForm()
+}
+
+function getRandomInt(max: number, negative: boolean): number {
+  const randomInt = Math.floor(Math.random() * max)
+  return negative ? randomInt - max / 2 : randomInt
+}
+
+function clearForm() {
+  name.value = ""
+  hasTemperature.value = false
+  hasHumidity.value = false
+}
 </script>
 
 <style scoped>
